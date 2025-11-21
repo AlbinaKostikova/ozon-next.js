@@ -1,8 +1,10 @@
 import { getData } from "./actions"
 import { Product } from "./models/product.model"
+import { Query } from "./models/query.model"
 
-export default async function Home() {
-  const products = await getData()
+export default async function Home({searchParams}: {searchParams: Query}) {
+  const query = await searchParams
+  const products = await getData(query)
   return (
     <>
       <div className="container">

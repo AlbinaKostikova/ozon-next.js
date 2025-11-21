@@ -1,10 +1,23 @@
 'use client'
 
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
 
 export default function Filter() {
   const [isOpen, setIsOpen] = useState(false)
-  const updateFilter = () => {}
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const updateFilter = (value: string) => {
+    const params = new URLSearchParams(searchParams)
+    if(value) {
+      params.set('category', value)
+    } else {
+      params.delete('category')
+    }
+    router.replace(`${pathname}?${params.toString()}`)
+  }
   return (
     <div className="catalog-button">
       <button onClick={() => setIsOpen(!isOpen)}>
@@ -13,9 +26,9 @@ export default function Filter() {
       </button>
       <div className="catalog" style={{display: isOpen ? 'block' : 'none'}}>
         <ul className="catalog-list">
-          <li>Игровая приставка</li>
-          <li>Периферия для ПК</li>
-          <li>Игры и софт</li>
+          <li onClick={() => updateFilter('Игровая приставка')}>Игровая приставка</li>
+          <li onClick={() => updateFilter('Периферия для ПК')}>Периферия для ПК</li>
+          <li onClick={() => updateFilter('Игры и софт')}>Игры и софт</li>
         </ul>
       </div>
     </div>
